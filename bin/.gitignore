@@ -1,3 +1,10 @@
 /assignment1/
 .classpath
 .project
+*.class
+**/.DS_Store
+.DS_Store
+/.metadata/
+.settings
+.idea
+*.iml
