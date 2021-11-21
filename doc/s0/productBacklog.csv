@@ -1,2 +1,2 @@
 Story Number, Name, Owner, Priority, Estimate, As a, I want, So that, IMPL Details
-User Story 2.2,,,,,,,,
+User Story 2.2,Detailed Scores,Ahmad,1,2,user,"to be able to see all the scores categorized properly based on name, time and opponent",I can be able to reflect on the scores in a more specific way which will give a better insight on my capabilities,Create a new view asking the user for a name at the end of a game then getting the time and opponent of said game and saving it in the high-scores list categorized
