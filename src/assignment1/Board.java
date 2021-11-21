@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -63,7 +64,7 @@ public class Board {
      * @param coordinate Coordinate to find the cell
      * @return Cell that is located at the given coordinate
      */
-    public Cell getCell(Coordinate coordinate) {
+    public Cell getCell(Coordinate coordinate) { // TODO
         return this.board[coordinate.row][coordinate.col];
     }
 
@@ -78,33 +79,57 @@ public class Board {
      * Gets all the Musketeer cells on the board.
      * @return List of cells
      */
-    public List<Cell> getMusketeerCells() {
-        return getAllCells()
-                .stream()
-                .filter(cell -> cell.hasPiece() && cell.getPiece().getType() == Piece.Type.MUSKETEER)
-                .toList();
+    public List<Cell> getMusketeerCells() { // TODO
+    	int a = board.length;
+    	List<Cell> b = new ArrayList<>();
+    	for (int row = 0; row < a; row++) {
+            for (int col = 0; col < a; col++) {
+            	if (!board[row][col].hasPiece()) {
+        			continue;
+        		}
+            	if (this.board[row][col].getPiece().getType() == Piece.Type.MUSKETEER) {
+            		b.add(this.board[row][col]);
+            	}
+            }
+    	}
+        return b;
     }
 
     /**
      * Gets all the Guard cells on the board.
      * @return List of cells
      */
-    public List<Cell> getGuardCells() {
-        return getAllCells()
-                .stream()
-                .filter(cell -> cell.hasPiece() && cell.getPiece().getType() == Piece.Type.GUARD)
-                .toList();
+    public List<Cell> getGuardCells() { // TODO
+    	int a = board.length;
+    	List<Cell> b = new ArrayList<>();
+    	for (int row = 0; row < a; row++) {
+            for (int col = 0; col < a; col++) {
+            	if (!board[row][col].hasPiece()) {
+        			continue;
+        		}
+            	if (this.board[row][col].getPiece().getType() == Piece.Type.GUARD) {
+            		b.add(this.board[row][col]);
+            	}
+            }
+    	}
+        return b;
     }
 
     /**
      * Executes the given move on the board and changes turns at the end of the method.
      * @param move a valid move
      */
-    public void move(Move move) {
-        Piece piece = move.fromCell.getPiece();
-        move.toCell.setPiece(piece);
-        move.fromCell.removePiece();
-        changeTurn();
+    public void move(Move move) { // TODO
+    	Cell cor1 = move.fromCell;
+    	
+    	if (cor1.getPiece().getType() == Piece.Type.MUSKETEER) {
+    		this.turn =  Piece.Type.GUARD;
+    	} 
+    	else
+    		this.turn =  Piece.Type.MUSKETEER;
+    	move.toCell.setPiece(cor1.getPiece());
+    	move.fromCell.removePiece();
+    	
     }
 
     /**
@@ -112,12 +137,18 @@ public class Board {
      * @param move Copy of a move that was done and needs to be undone. The move copy has the correct piece info in the
      *             from and to cell fields. Changes turns at the end of the method.
      */
-    public void undoMove(Move move) {
-        Cell fromCell = getCell(move.fromCell.getCoordinate());
-        Cell toCell = getCell(move.toCell.getCoordinate());
-        fromCell.setPiece(move.fromCell.getPiece());
-        toCell.setPiece(move.toCell.getPiece());
-        changeTurn();
+    public void undoMove(Move move) { // TODO
+    	Cell a = move.fromCell;
+    	Cell b = move.toCell;
+    	this.board[a.getCoordinate().row][a.getCoordinate().col].setPiece(a.getPiece());
+    	this.board[b.getCoordinate().row][b.getCoordinate().col].setPiece(b.getPiece());
+    	
+    	if (a.getPiece().getType() == Piece.Type.MUSKETEER) {
+    		this.turn =  Piece.Type.MUSKETEER;
+    	} 
+    	else
+    		this.turn =  Piece.Type.GUARD;
+    	
     }
 
     /**
@@ -127,29 +158,118 @@ public class Board {
      * @param move a move
      * @return     True, if the move is valid, false otherwise
      */
-    public Boolean isValidMove(Move move) {
-        Cell fromCell = move.fromCell;
-        Coordinate fromCoordinate = fromCell.getCoordinate();
-        Coordinate toCoordinate = move.toCell.getCoordinate();
-
-        if (!isNextTo(fromCoordinate, toCoordinate)) return false;
-        if (!onBoard(toCoordinate)) return false;
-
-        return fromCell.getPiece().canMoveOnto(move.toCell);
+    public Boolean isValidMove(Move move) { // TODO
+    	Cell a = move.fromCell;
+    	Cell b = move.toCell;
+    	if (b.getCoordinate().col <0 || b.getCoordinate().col >= this.board.length)
+    		return false;
+    	if (b.getCoordinate().row <0 || b.getCoordinate().row >= this.board.length)
+    		return false;
+    	if (Math.abs(a.getCoordinate().col - b.getCoordinate().col) > 1)
+    		return false;
+    	if (Math.abs(a.getCoordinate().row - b.getCoordinate().row) > 1)
+    		return false;
+    	
+    	if (Math.abs(a.getCoordinate().col - b.getCoordinate().col) == 1) {
+    		if (Math.abs(a.getCoordinate().row - b.getCoordinate().row) != 0)
+    			return false;
+    	}
+    	if (Math.abs(a.getCoordinate().row - b.getCoordinate().row) == 1) {
+    		if (Math.abs(a.getCoordinate().col - b.getCoordinate().col) != 0)
+    			return false;
+    	}
+    	return a.getPiece().canMoveOnto(b);
+    	
+    	
     }
 
     /**
      * Get all the possible cells that have pieces that can be moved this turn.
      * @return      Cells that can be moved from the given cells
      */
-    public List<Cell> getPossibleCells() {
-        List<Cell> allCellsThisTurn = getTurn() == Piece.Type.MUSKETEER ? getMusketeerCells() : getGuardCells();
-        List<Cell> possibleCells = new ArrayList<>();
-        for (Cell cell : allCellsThisTurn) {
-            if (!getPossibleDestinations(cell).isEmpty())
-                possibleCells.add(cell);
-        }
-        return possibleCells;
+    public List<Cell> getPossibleCells() { // TODO
+    	int a = board.length;
+    	List<Cell> b = new ArrayList<>();
+    	for (int row = 0; row <= a-1; row++) {
+            for (int col = 0; col <= a-1; col++) {
+            	if (!board[row][col].hasPiece()) {
+        			continue;
+        		}
+            	if (getTurn() == Piece.Type.MUSKETEER) {
+                	if (board[row][col].getPiece().getType() == Piece.Type.MUSKETEER) {
+                		if(row+1 < a) {
+                			if (isValidMove(new Move(this.board[row][col], this.board[row+1][col]))) {
+                				
+                				if (!b.contains(this.board[row][col])) {
+                					b.add(this.board[row][col]);
+                				}
+                			}
+                		}
+                		if(col+1 <a) {
+                			
+                			if (isValidMove(new Move(this.board[row][col], this.board[row][col+1]))) {
+                				
+                				if (!b.contains(this.board[row][col])) {
+                					b.add(this.board[row][col]);
+                				}
+                			}
+                		}
+                		
+                		if(col-1 >= 0) {
+                			if (isValidMove(new Move(this.board[row][col], this.board[row][col-1]))) {
+                				if (!b.contains(this.board[row][col])) {
+                					b.add(this.board[row][col]);
+                				}
+                			}
+                		}
+                		if(row-1 >= 0) {
+                			if (isValidMove(new Move(this.board[row][col], this.board[row-1][col]))) {
+                				if (!b.contains(this.board[row][col])) {
+                					b.add(this.board[row][col]);
+                				}
+                			}
+                		}
+                		
+                	
+                	}
+            	}
+            	else {
+            		if (board[row][col].getPiece().getType() == Piece.Type.GUARD) {
+            			if(row+1 < a) {
+                			if (isValidMove(new Move(this.board[row][col], this.board[row+1][col]))) {
+                				if (!b.contains(this.board[row][col])) {
+                					b.add(this.board[row][col]);
+                				}
+                			}
+                		}
+                		if(col+1 <a) {
+                			if (isValidMove(new Move(this.board[row][col], this.board[row][col+1]))) {
+                				if (!b.contains(this.board[row][col])) {
+                					b.add(this.board[row][col]);
+                				}
+                			}
+                		}
+                		
+                		if(col-1 >= 0) {
+                			if (isValidMove(new Move(this.board[row][col], this.board[row][col-1]))) {
+                				if (!b.contains(this.board[row][col])) {
+                					b.add(this.board[row][col]);
+                				}
+                			}
+                		}
+                		if(row-1 >= 0) {
+                			if (isValidMove(new Move(this.board[row][col], this.board[row-1][col]))) {
+                				if (!b.contains(this.board[row][col])) {
+                					b.add(this.board[row][col]);
+                				}
+                			}
+                		}
+            	}
+            	
+            }
+    	}
+    	}
+    	return b;
     }
 
     /**
@@ -157,54 +277,92 @@ public class Board {
      * @param fromCell The cell that has the piece that is going to be moved
      * @return List of cells that are possible to get to
      */
-    public List<Cell> getPossibleDestinations(Cell fromCell) {
-        List<Cell> destinations = new ArrayList<>();
-        int[][] possibleMoves = {{-1,0}, {0,1}, {1,0}, {0,-1}};
-
-        for (int[] move: possibleMoves) {
-            Coordinate oldCoordinate = fromCell.getCoordinate();
-            int row = move[0] + oldCoordinate.row;
-            int col = move[1] + oldCoordinate.col;
-            Coordinate newCoordinate = new Coordinate(row, col);
-            if (!onBoard(newCoordinate)) continue;
-
-            Cell toCell = getCell(newCoordinate);
-            if (isValidMove(new Move(fromCell, toCell)))
-                destinations.add(toCell);
-        }
-        return destinations;
+    public List<Cell> getPossibleDestinations(Cell fromCell) { // TODO
+    	List<Cell> b = new ArrayList<>();
+    	int col1 = fromCell.getCoordinate().col;
+    	int row1 = fromCell.getCoordinate().row;
+    	if (row1+1<board.length) {
+    		if (isValidMove(new Move(fromCell, this.board[row1+1][col1]))) {
+    			b.add(this.board[row1+1][col1]);
+    		}
+    		
+    	}
+    	if (row1-1>=0) {
+    		if(isValidMove(new Move(fromCell, this.board[row1-1][col1]))) {
+    			b.add(this.board[row1-1][col1]);
+    		}
+    	}
+    	
+    	if (col1+1<board.length) {
+    		if(isValidMove(new Move(fromCell, this.board[row1][col1+1]))) {
+    			b.add(this.board[row1][col1+1]);
+    		}
+    	}
+    	
+    	if (col1-1 >=0) {
+    		if(isValidMove(new Move(fromCell, this.board[row1][col1-1]))) {
+    			b.add(this.board[row1][col1-1]);
+    		}
+    	}
+    	return b;
+    	
     }
 
     /**
      * Get all the possible moves that can be made this turn.
      * @return List of moves that can be made this turn
      */
-    public List<Move> getPossibleMoves() {
-        List<Move> moves = new ArrayList<>();
-        List<Cell> possibleCells = this.getPossibleCells();
-        for (Cell fromCell: possibleCells) {
-            List<Cell> possibleDestinations = this.getPossibleDestinations(fromCell);
-            for (Cell toCell : possibleDestinations) {
-                moves.add(new Move(fromCell, toCell));
-            }
+    public List<Move> getPossibleMoves() { // TODO
+    	List<Move> result = new ArrayList<>();
+        List<Cell> b = getPossibleCells();
+        for (int i = 0; i< b.size(); i++) {
+        	List<Cell> a = getPossibleDestinations(b.get(i));
+        	for (int x = 0; x< a.size(); x++) {
+        		Move move1 = new Move(b.get(i), a.get(x));
+        		result.add(move1);
+        	}
+        	
         }
-        return moves;
+        return result;
     }
 
     /**
      * Checks if the game is over and sets the winner if there is one.
      * @return True, if the game is over, false otherwise.
      */
-    public boolean isGameOver() {
-        if (inSameRowOrSameCol(getMusketeerCells())) {
-            winner = Piece.Type.GUARD;
-            return true;
+    public boolean isGameOver() { // TODO
+        List<Move> allMoves = getPossibleMoves();
+        if (allMoves.size() == 0) {
+        	this.winner = Piece.Type.MUSKETEER;
+        	return true;
         }
-        if (getPossibleCells().isEmpty()) {
-            winner = Piece.Type.MUSKETEER;
-            return true;
+        List<Cell> allMusks = getMusketeerCells();
+        Cell a = allMusks.get(0);
+        boolean check = true;
+        for (int i = 0; i < allMusks.size(); i++) {
+        	Cell x = allMusks.get(i);
+        	if (x.getCoordinate().col != a.getCoordinate().col) {
+        		check = false;
+        	}
         }
-        return false;
+        if (check) {
+        	this.winner = Piece.Type.GUARD;
+        	return true;
+        }
+        for (int q = 0; q < allMusks.size(); q++) {
+            Cell e = allMusks.get(q);
+            if (e.getCoordinate().row != a.getCoordinate().row) {
+            	check = false;
+            }
+        		
+        }
+        if (check) {
+        	this.winner = Piece.Type.GUARD;
+        	return true;
+        }
+        else
+        	return false;
+        
     }
 
     /**

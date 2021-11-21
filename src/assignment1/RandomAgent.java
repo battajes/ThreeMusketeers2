@@ -2,7 +2,6 @@ package assignment1;
 
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class RandomAgent extends Agent {
 
@@ -16,20 +15,9 @@ public class RandomAgent extends Agent {
      */
     @Override
     public Move getMove() {
-        List<Cell> possibleCells = board.getPossibleCells();
-        Cell fromCell = possibleCells.get(new Random().nextInt(possibleCells.size()));
-
-        List<Cell> possibleDestinations = board.getPossibleDestinations(fromCell);
-        Cell toCell = possibleDestinations.get(new Random().nextInt(possibleDestinations.size()));
-
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        System.out.printf("[%s (Random Agent)] Moving piece %s to %s.\n",
-                board.getTurn().getType(), fromCell.getCoordinate(), toCell.getCoordinate());
-        return new Move(fromCell, toCell);
+    	List<Move> movesList = board.getPossibleMoves();
+        Random anyMove = new Random();
+        Move randomMove = movesList.get(anyMove.nextInt(movesList.size()));
+        return randomMove;
     }
 }
