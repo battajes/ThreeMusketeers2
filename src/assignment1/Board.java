@@ -337,31 +337,17 @@ public class Board {
         	return true;
         }
         List<Cell> allMusks = getMusketeerCells();
-        Cell a = allMusks.get(0);
-        boolean check = true;
-        for (int i = 0; i < allMusks.size(); i++) {
-        	Cell x = allMusks.get(i);
-        	if (x.getCoordinate().col != a.getCoordinate().col) {
-        		check = false;
-        	}
+        if (allMusks.get(0).getCoordinate().col ==  allMusks.get(1).getCoordinate().col && allMusks.get(0).getCoordinate().col ==  allMusks.get(2).getCoordinate().col) {
+        	this.winner= Piece.Type.GUARD;
+        	return true;
         }
-        if (check) {
+        if (allMusks.get(0).getCoordinate().row ==  allMusks.get(1).getCoordinate().row && allMusks.get(0).getCoordinate().row ==  allMusks.get(2).getCoordinate().row) {
         	this.winner = Piece.Type.GUARD;
         	return true;
         }
-        for (int q = 0; q < allMusks.size(); q++) {
-            Cell e = allMusks.get(q);
-            if (e.getCoordinate().row != a.getCoordinate().row) {
-            	check = false;
-            }
-        		
-        }
-        if (check) {
-        	this.winner = Piece.Type.GUARD;
-        	return true;
-        }
-        else
-        	return false;
+        
+        
+        return false;
         
     }
 
