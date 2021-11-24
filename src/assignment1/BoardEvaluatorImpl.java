@@ -10,66 +10,57 @@ public class BoardEvaluatorImpl implements BoardEvaluator {
      * A lower score means the Guard is winning
      * Add heuristics to generate a score given a Board
      * @param board Board to calculate the score of
-     * @return double Score of the given Board
+     * @return int Score of the given Board
      */
     @Override
-    public double evaluateBoard(Board board) {
-        double score = 0;
-        score += getRowColScore(board);
-        score += getNumMusketeersPossibleMovesScore(board);
-        score += getMusketeerDistanceScore(board);
-        score += getGuardDistanceFromMusketeers(board);
-        return score;
-    }
-
-    private double getRowColScore(Board board) {
-        List<Cell> musketeerCells = board.getMusketeerCells();
-        long numRows = musketeerCells.stream().map(cell -> cell.getCoordinate().row).distinct().count();
-        long numCols = musketeerCells.stream().map(cell -> cell.getCoordinate().col).distinct().count();
-
-        if (numRows == 1 || numCols == 1) return Integer.MIN_VALUE; // Game over. Guard wins.
-        if (numRows == 2 || numCols == 2) return -15; // 2 Musketeers in same row or col.
-        return 15; // All musketeers in different cols/rows.
-    }
-
-    private double getNumMusketeersPossibleMovesScore(Board board) {
-        List<Cell> musketeerCells = board.getMusketeerCells();
-        int numMusketeersCanMove = 0;
-        for (Cell musketeerCell: musketeerCells) {
-            if (board.getPossibleDestinations(musketeerCell).size() > 0) {
-                numMusketeersCanMove += 1;
-            }
-        }
-        return numMusketeersCanMove * -3;
-    }
-
-    private double getMusketeerDistanceScore(Board board) {
-        List<Cell> musketeerCells = board.getMusketeerCells();
-        Cell c1 = musketeerCells.get(0);
-        Cell c2 = musketeerCells.get(1);
-        Cell c3 = musketeerCells.get(2);
-
-        int score = Math.abs(c1.getCoordinate().row - c2.getCoordinate().row)
-                + Math.abs(c2.getCoordinate().row - c3.getCoordinate().row);
-        score += Math.abs(c1.getCoordinate().col - c2.getCoordinate().col)
-                + Math.abs(c2.getCoordinate().col - c3.getCoordinate().col);
-
-        return score * 2;
-    }
-
-    private double getGuardDistanceFromMusketeers(Board board) {
-        int score = 0;
-        for (Cell musketeerCell: board.getMusketeerCells()) {
-            int musketeerRow = musketeerCell.getCoordinate().row;
-            int musketeerCol = musketeerCell.getCoordinate().col;
-            for (Cell guardCell : board.getGuardCells()) {
-                int guardRow = guardCell.getCoordinate().row;
-                int guardCol = guardCell.getCoordinate().col;
-
-                score += Math.abs(musketeerRow - guardRow);
-                score += Math.abs(musketeerCol - guardCol);
-            }
-        }
-        return score * 0.1;
+    public int evaluateBoard(Board board) { // TODO
+        List<Cell> a = board.getMusketeerCells();
+        int result = 20;
+        int col1 = a.get(0).getCoordinate().col;
+        int row1 = a.get(0).getCoordinate().row;
+        int col2 = a.get(1).getCoordinate().col;
+        int row2 = a.get(1).getCoordinate().row;
+        int col3 = a.get(2).getCoordinate().col;
+        int row3 = a.get(2).getCoordinate().row;
+        int totalc = 0;
+        
+        if (col1 == col2)
+        	totalc += 1;
+        if (col1 == col3)
+        	totalc += 1;
+        if (col2 == col3)
+        	totalc += 1;
+        if (row1 == row2)
+        	totalc += 1;
+        if (row1 == row3)
+        	totalc += 1;
+        if (row2 == row3)
+        	totalc += 1;
+        
+        
+        List<Move> allMoves = board.getPossibleMoves();
+        int size = allMoves.size();
+        if (size == 0)
+        	result += 20;
+        if (size == 1)
+        	result += 15;
+        if (size == 2)
+        	result += 10;
+        if (size == 3)
+        	result += 5;
+        if (size == 5)
+        	result -= 5;
+        if (size == 6)
+        	result -= 10;
+        if (size == 7)
+        	result -= 15;
+        if (size >= 8)
+        	result -= 20;
+        
+        
+        
+        result = result - (totalc *5);
+        return result;
+        
     }
 }
