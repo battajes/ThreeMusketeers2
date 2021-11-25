@@ -199,7 +199,7 @@ public class ThreeMusketeers {
         }
         return scanner.next().toUpperCase();
     }
-
+ 
     /**
      * Get human input for selecting the game mode
      * @return the chosen GameMode

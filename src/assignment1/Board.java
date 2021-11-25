@@ -382,7 +382,7 @@ public class Board {
             System.out.printf("Failed to save board to %s.\n", filePath);
         }
     }
-
+ 
     @Override
     public String toString() {
         StringBuilder boardStr = new StringBuilder("  | A B C D E\n");
