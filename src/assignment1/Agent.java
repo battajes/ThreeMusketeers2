@@ -3,6 +3,7 @@ package assignment1;
 public abstract class Agent {
 
     protected Board board;
+    public String name;
     
     /**
      * An Agent that can play ThreeMusketeers
@@ -17,4 +18,12 @@ public abstract class Agent {
      * @return a valid Move that the Agent can do
      */
     public abstract Move getMove();
+    
+    public abstract String getName();
+     
+    public abstract String setName();
 }
+
+
+
+
