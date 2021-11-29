@@ -12,9 +12,6 @@ public class ThreeMusketeers {
     private final Board board;
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
-    private final Scanner s = new Scanner(System.in);
-    private final Scanner m = new Scanner(System.in);
-    private final List<Move> moves = new ArrayList<>();
     private Agent player;
 
     // All possible game modes
