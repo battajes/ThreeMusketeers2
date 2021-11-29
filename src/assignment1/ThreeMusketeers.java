@@ -12,9 +12,8 @@ public class ThreeMusketeers {
     private final Board board;
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
-    //private final List<Move> moves = new ArrayList<>();
+
     private final Memento menento;
-=======
 
     private Agent player;
 
