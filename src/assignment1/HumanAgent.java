@@ -2,13 +2,19 @@ package assignment1;
 
 import java.util.Scanner;
 
+import assignment1.Piece.Type;
 import assignment1.Exceptions.InvalidMoveException;
 
 public class HumanAgent extends Agent {
 	private final Scanner scanner = new Scanner(System.in);
+	private final Scanner s = new Scanner(System.in);
+	private Type type;
+	
 
-    public HumanAgent(Board board) {
+    public HumanAgent(Board board, Type type) {
         super(board);
+        this.type = type;
+        this.name = this.setName();
     }
 
     /**
@@ -64,4 +70,16 @@ public class HumanAgent extends Agent {
     	
     	
     }
+
+	@Override
+	public String getName() {
+		return this.name;
+	
+	}
+
+	@Override
+	public String setName() {
+		System.out.print(this.type + ": Enter player name: " );
+		return s.next();
+	}
 }
