@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Random;
 
 public class RandomAgent extends Agent {
+	
 
     public RandomAgent(Board board) {
         super(board);
+        this.name = this.setName();
     }
 
     /**
@@ -20,4 +22,13 @@ public class RandomAgent extends Agent {
         Move randomMove = movesList.get(anyMove.nextInt(movesList.size()));
         return randomMove;
     }
+    
+    public String getName() {
+    	return this.name;
+    }
+    
+    public String setName() {
+    	return this.name = "Random";
+    }
+    
 }
