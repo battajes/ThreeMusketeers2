@@ -45,6 +45,7 @@ public class HumanAgent extends Agent {
 		}
     	}
     	
+    	
     	Coordinate second = null;
     	Boolean check1 = true;
     	while(check1) {
