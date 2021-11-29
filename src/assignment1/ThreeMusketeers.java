@@ -12,6 +12,9 @@ public class ThreeMusketeers {
     private final Board board;
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
+
+    private final Memento menento;
+
     private Agent player;
 
     // All possible game modes
@@ -20,7 +23,7 @@ public class ThreeMusketeers {
         HumanRandom("Human vs Computer (Random)"),
         HumanGreedy("Human vs Computer (Greedy)");
 
-        private final String gameMode;
+        private final String  gameMode;
         GameMode(final String gameMode) {
             this.gameMode = gameMode;
         }
@@ -31,6 +34,7 @@ public class ThreeMusketeers {
      */
     public ThreeMusketeers() {
         this.board = new Board();
+        this.menento = new Memento(this.board);
     }
 
     /**
@@ -39,6 +43,7 @@ public class ThreeMusketeers {
      */
     public ThreeMusketeers(String boardFilePath) {
         this.board = new Board(boardFilePath);
+		this.menento =  new Memento(this.board);
     }
 
     /**
@@ -118,15 +123,14 @@ public class ThreeMusketeers {
                         move(currentAgent);
                         break;
                     case "U":
-                        if (moves.size() == 0) {
+                        if (this.menento.getSize() == 0) {
                             System.out.println("No moves to undo.");
                             continue;
                         }
-                        else if (moves.size() == 1 || isHumansPlaying()) {
+                        else if (this.menento.getSize()  == 1 || isHumansPlaying()) {
                             undoMove();
                         }
                         else {
-                            undoMove();
                             undoMove();
                         }
                         break;
@@ -167,7 +171,8 @@ public class ThreeMusketeers {
     protected void move(final Agent agent) {
     	Move move1 = agent.getMove();
     	Move move2 = new Move(move1);
-    	moves.add(move2);
+    	this.menento.setState(move2);
+    	//moves.add(move2);
     	board.move(move1);
     }
 
@@ -175,8 +180,10 @@ public class ThreeMusketeers {
      * Removes a move from the top of the moves stack and undoes the move on the board.
      */
     private void undoMove() {
-    	int a = moves.size();
-    	Move oldmove = moves.remove(a - 1);
+    	//int a = moves.size();
+    	
+    	//Move oldmove = moves.remove(a - 1);
+    	Move oldmove = this.menento.getState();
     	board.undoMove(oldmove);
     }
     
