@@ -100,7 +100,7 @@ public class ThreeMusketeers {
         while(!board.isGameOver()) {
         	
             System.out.println("\n" + board);
-
+            
             final Agent currentAgent;
             
            
@@ -145,6 +145,21 @@ public class ThreeMusketeers {
 
         System.out.println(board);
         System.out.printf("\n%s won!%n", this.getAgentName(this.board.getWinner()));
+
+        if (!isHumansPlaying()) {
+        	final Agent currentAgent;
+        	if (board.getTurn() == Piece.Type.MUSKETEER)
+                currentAgent = musketeerAgent;
+            else
+                currentAgent = guardAgent;
+        	if (currentAgent instanceof HumanAgent) {
+	             System.out.println("Who was playing? ");
+	             String test = scanner.next();
+	             System.out.println("------");
+	             System.out.print(test);
+        	}
+        }
+
     }
 
     /**
@@ -223,7 +238,7 @@ public class ThreeMusketeers {
         }
         return scanner.next().toUpperCase();
     }
-
+ 
     /**
      * Get human input for selecting the game mode
      * @return the chosen GameMode
