@@ -18,7 +18,7 @@ public class ThreeMusketeers {
         HumanRandom("Human vs Computer (Random)"),
         HumanGreedy("Human vs Computer (Greedy)");
 
-        private final String gameMode;
+        private final String  gameMode;
         GameMode(final String gameMode) {
             this.gameMode = gameMode;
         }
