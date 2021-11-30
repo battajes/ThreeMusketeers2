@@ -1,3 +1,4 @@
+
 package assignment1;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import assignment1.Piece.Type;
 public class ThreeMusketeers {
 
     private final Board board;
+    private final StopWatch stopwatch = new StopWatch();
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
 
@@ -143,7 +145,7 @@ public class ThreeMusketeers {
                 move(currentAgent);
             }
         }
-
+        stopwatch.stopTimer();
         System.out.println(board);
         System.out.printf("\n%s won!%n", this.getAgentName(this.board.getWinner()));
 
@@ -174,6 +176,8 @@ public class ThreeMusketeers {
     	this.menento.setState(move2);
     	//moves.add(move2);
     	board.move(move1);
+      stopwatch.notifyObserver();
+    	stopwatch.time.getTime();
     }
 
     /**
@@ -262,6 +266,7 @@ public class ThreeMusketeers {
             System.out.println("Invalid option.");
             return getModeInput();
         }
+        stopwatch.start();
         return GameMode.values()[mode];
     }
 
@@ -271,3 +276,4 @@ public class ThreeMusketeers {
         game.play();
     }
 }
+
