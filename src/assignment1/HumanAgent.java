@@ -5,7 +5,7 @@ import java.util.Scanner;
 import assignment1.Piece.Type;
 import assignment1.Exceptions.InvalidMoveException;
 
-public class HumanAgent extends Agent {
+public class HumanAgent extends Agent  {
 	private final Scanner scanner = new Scanner(System.in);
 	private final Scanner s = new Scanner(System.in);
 	private Type type;
