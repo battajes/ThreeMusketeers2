@@ -11,6 +11,10 @@ public class ThreeMusketeers {
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
     private final List<Move> moves = new ArrayList<>();
+    private final Memento menento;
+
+
+    private Agent player;
 
     // All possible game modes
     public enum GameMode {
@@ -37,6 +41,7 @@ public class ThreeMusketeers {
      */
     public ThreeMusketeers(String boardFilePath) {
         this.board = new Board(boardFilePath);
+        this.menento =  new Memento(this.board);
     }
 
     /**
@@ -106,11 +111,11 @@ public class ThreeMusketeers {
                         move(currentAgent);
                         break;
                     case "U":
-                        if (moves.size() == 0) {
+                        if (this.menento.getSize() == 0) {
                             System.out.println("No moves to undo.");
                             continue;
                         }
-                        else if (moves.size() == 1 || isHumansPlaying()) {
+                        else if (this.menento.getSize()  == 1  || isHumansPlaying()) {
                             undoMove();
                         }
                         else {
@@ -130,7 +135,7 @@ public class ThreeMusketeers {
         
         stopwatch.stopTimer();
         System.out.println(board);
-        System.out.printf("\n%s won!%n", board.getWinner().getType());
+        System.out.printf("\n%s won!%n", this.name(this.board.getWinner()));
     }
 
     /**
@@ -141,7 +146,7 @@ public class ThreeMusketeers {
     protected void move(final Agent agent) {
     	Move move1 = agent.getMove();
     	Move move2 = new Move(move1);
-    	moves.add(move2);
+        this.menento.setState(move2);
     	board.move(move1);
     	stopwatch.notifyObserver();
     	stopwatch.time.getTime();
@@ -151,22 +156,45 @@ public class ThreeMusketeers {
      * Removes a move from the top of the moves stack and undoes the move on the board.
      */
     private void undoMove() {
-    	int a = moves.size();
-    	Move oldmove = moves.remove(a - 1);
+//     	int a = moves.size();
+//     	Move oldmove = moves.remove(a - 1);
+        Move oldmove = this.menento.getState();
     	board.undoMove(oldmove);
     }
 
+      private Agent getPlayer() {
+    	this.getCurrentAgent();
+    	return this.player;
+    }
+    
     /**
      * Get human input for move action
      * @return the selected move action, 'M': move, 'U': undo, and 'S': save
      */
     private String getInputOption() {
-        System.out.printf("[%s] Enter 'M' to move, 'U' to undo, and 'S' to save: ", board.getTurn().getType());
+        System.out.printf("[%s] Enter 'M' to move, 'U' to undo, and 'S' to save: ", this.getCurrentAgent().getName());
         while (!scanner.hasNext("[MUSmus]")) {
             System.out.print("Invalid option. Enter 'M', 'U', or 'S': ");
             scanner.next();
         }
         return scanner.next().toUpperCase();
+    }
+    
+        public Agent getCurrentAgent() {
+        if (board.getTurn() == Piece.Type.MUSKETEER) {
+        	this.player = musketeerAgent;
+            return musketeerAgent;
+        }
+        this.player = guardAgent;
+        return guardAgent;
+    }
+    
+      public String name(Type type) {
+        if (type == Piece.Type.MUSKETEER) {
+            return musketeerAgent.getName();
+        }
+  
+        return guardAgent.getName();
     }
 
     /**
