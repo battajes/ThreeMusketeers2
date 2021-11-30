@@ -1,5 +1,3 @@
 Date, Sprint #, Standup #, Name, What did you work on since the last standup?, What do you commit to next?, When do you think you'll be done?, Do you have any blockers?
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
+Nov 27th,1,3,Jessica,Implementing the LinkedList and node classes, getting the icons, probably need more time, nodes result in ArrayList instead of ArrayList<string> stuck
+Nov 27th,1,3,Sakshi,undoing the move selected and making it result on the board,deciding if both players moves should be shown to undo, 2 days, no blockers
