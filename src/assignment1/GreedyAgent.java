@@ -5,7 +5,7 @@ import java.util.List;
 public class GreedyAgent extends Agent {
     Board boardCopy;
     BoardEvaluatorImpl boardEvaluator;
-    int depth = 10;
+    int depth = 10; 
 
     public GreedyAgent(Board board) {
         super(board);

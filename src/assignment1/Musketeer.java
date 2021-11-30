@@ -5,7 +5,7 @@ public class Musketeer extends Piece {
     public Musketeer() {
         super("X", Type.MUSKETEER);
     }
-
+ 
     /**
      * Returns true if the Musketeer can move onto the given cell.
      * @param cell Cell to check if the Musketeer can move onto
