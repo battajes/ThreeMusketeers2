@@ -1,5 +1,5 @@
-Date, Sprint #, Standup #, Name, What did you work on since the last standup?, What do you commit to next?, When do you think you'll be done?, Do you have any blockers?
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
+Date,Sprint #,Standup #,Name,What did you work on since the last standup?,What do you commit to next?,When do you think you'll be done?,Do you have any blockers?
+Nov 24th,1,2,Ahmad,I implented asking for names to store for a detailed high score,I commit to creating a new class highScoreText to begin on my builder pattern design,3 days,Yes I need to change the highscores list which is still in progress for DEV-13
+Nov 25th,1,2,Jessica,decided to create a currentAgent method and a scanner object to ask for input,Ask the user for input,2 days,couldn't get the name to change as the imputed string by user
+Nov 25th,1,2,Sakshi,figuring out how to add all the moves made previously and display them,for the move to be undone when selected,2 days,had errors finding done moves my random agent.
+Nov 24th,1,2,Zoubair,Completed Timer class,I commit to implementing the new classes and observer pattern into the three musketeers and making the timer work in game ,3 days,No blockers
