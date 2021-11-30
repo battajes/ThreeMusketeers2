@@ -92,7 +92,7 @@ public class ThreeMusketeers {
                 guardAgent = side.equals("G") ? new HumanAgent(board, Piece.Type.GUARD) : new GreedyAgent(board);
             }
         }
-    }
+    } 
 
     /**
      * Runs the game, handling human input for move actions
