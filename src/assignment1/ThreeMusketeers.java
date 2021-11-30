@@ -4,18 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import assignment1.Piece.Type;
-
-
 public class ThreeMusketeers {
 
     private final Board board;
+    private final StopWatch stopwatch = new StopWatch();
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
-
-    private final Memento menento;
-
-    private Agent player;
+    private final List<Move> moves = new ArrayList<>();
 
     // All possible game modes
     public enum GameMode {
@@ -23,7 +18,7 @@ public class ThreeMusketeers {
         HumanRandom("Human vs Computer (Random)"),
         HumanGreedy("Human vs Computer (Greedy)");
 
-        private final String  gameMode;
+        private final String gameMode;
         GameMode(final String gameMode) {
             this.gameMode = gameMode;
         }
@@ -34,7 +29,6 @@ public class ThreeMusketeers {
      */
     public ThreeMusketeers() {
         this.board = new Board();
-        this.menento = new Memento(this.board);
     }
 
     /**
@@ -43,7 +37,6 @@ public class ThreeMusketeers {
      */
     public ThreeMusketeers(String boardFilePath) {
         this.board = new Board(boardFilePath);
-		this.menento =  new Memento(this.board);
     }
 
     /**
@@ -72,9 +65,8 @@ public class ThreeMusketeers {
     private void selectMode(GameMode mode) {
         switch (mode) {
             case Human -> {
-                musketeerAgent = new HumanAgent(board, Piece.Type.MUSKETEER);
-                
-                guardAgent = new HumanAgent(board, Piece.Type.GUARD);
+                musketeerAgent = new HumanAgent(board);
+                guardAgent = new HumanAgent(board);
             }
             case HumanRandom -> {
                 String side = getSideInput();
@@ -82,14 +74,14 @@ public class ThreeMusketeers {
                 // The following statement may look weird, but it's what is known as a ternary statement.
                 // Essentially, it sets musketeerAgent equal to a new HumanAgent if the value M is entered,
                 // Otherwise, it sets musketeerAgent equal to a new RandomAgent
-                musketeerAgent = side.equals("M") ? new HumanAgent(board, Piece.Type.MUSKETEER) : new RandomAgent(board);
+                musketeerAgent = side.equals("M") ? new HumanAgent(board) : new RandomAgent(board);
                 
-                guardAgent = side.equals("G") ? new HumanAgent(board, Piece.Type.GUARD) : new RandomAgent(board);
+                guardAgent = side.equals("G") ? new HumanAgent(board) : new RandomAgent(board);
             }
             case HumanGreedy -> {
                 String side = getSideInput();
-                musketeerAgent = side.equals("M") ? new HumanAgent(board, Piece.Type.MUSKETEER) : new GreedyAgent(board);
-                guardAgent = side.equals("G") ? new HumanAgent(board, Piece.Type.GUARD) : new GreedyAgent(board);
+                musketeerAgent = side.equals("M") ? new HumanAgent(board) : new GreedyAgent(board);
+                guardAgent = side.equals("G") ? new HumanAgent(board) : new GreedyAgent(board);
             }
         }
     }
@@ -100,37 +92,29 @@ public class ThreeMusketeers {
      */
     private void runGame() {
         while(!board.isGameOver()) {
-        	
             System.out.println("\n" + board);
-            
-            final Agent currentAgent;
-            
-           
-            if (board.getTurn() == Piece.Type.MUSKETEER) {
-                currentAgent = musketeerAgent;
 
-            }
-            else {
+            final Agent currentAgent;
+            if (board.getTurn() == Piece.Type.MUSKETEER)
+                currentAgent = musketeerAgent;
+            else
                 currentAgent = guardAgent;
 
-            }
-
             if (currentAgent instanceof HumanAgent) // Human move
-            	
-            	
                 switch (getInputOption()) {
                     case "M":
                         move(currentAgent);
                         break;
                     case "U":
-                        if (this.menento.getSize() == 0) {
+                        if (moves.size() == 0) {
                             System.out.println("No moves to undo.");
                             continue;
                         }
-                        else if (this.menento.getSize()  == 1 || isHumansPlaying()) {
+                        else if (moves.size() == 1 || isHumansPlaying()) {
                             undoMove();
                         }
                         else {
+                            undoMove();
                             undoMove();
                         }
                         break;
@@ -143,24 +127,10 @@ public class ThreeMusketeers {
                 move(currentAgent);
             }
         }
-
+        
+        stopwatch.stopTimer();
         System.out.println(board);
-        System.out.printf("\n%s won!%n", this.getAgentName(this.board.getWinner()));
-
-        if (!isHumansPlaying()) {
-        	final Agent currentAgent;
-        	if (board.getTurn() == Piece.Type.MUSKETEER)
-                currentAgent = musketeerAgent;
-            else
-                currentAgent = guardAgent;
-        	if (currentAgent instanceof HumanAgent) {
-	             System.out.println("Who was playing? ");
-	             String test = scanner.next();
-	             System.out.println("------");
-	             System.out.print(test);
-        	}
-        }
-
+        System.out.printf("\n%s won!%n", board.getWinner().getType());
     }
 
     /**
@@ -171,25 +141,19 @@ public class ThreeMusketeers {
     protected void move(final Agent agent) {
     	Move move1 = agent.getMove();
     	Move move2 = new Move(move1);
-    	this.menento.setState(move2);
-    	//moves.add(move2);
+    	moves.add(move2);
     	board.move(move1);
+    	stopwatch.notifyObserver();
+    	stopwatch.time.getTime();
     }
 
     /**
      * Removes a move from the top of the moves stack and undoes the move on the board.
      */
     private void undoMove() {
-    	//int a = moves.size();
-    	
-    	//Move oldmove = moves.remove(a - 1);
-    	Move oldmove = this.menento.getState();
+    	int a = moves.size();
+    	Move oldmove = moves.remove(a - 1);
     	board.undoMove(oldmove);
-    }
-    
-    private Agent getPlayer() {
-    	this.getCurrentAgent();
-    	return this.player;
     }
 
     /**
@@ -197,30 +161,13 @@ public class ThreeMusketeers {
      * @return the selected move action, 'M': move, 'U': undo, and 'S': save
      */
     private String getInputOption() {
-        System.out.printf("[%s] Enter 'M' to move, 'U' to undo, and 'S' to save: " , this.getCurrentAgent().getName() );
+        System.out.printf("[%s] Enter 'M' to move, 'U' to undo, and 'S' to save: ", board.getTurn().getType());
         while (!scanner.hasNext("[MUSmus]")) {
             System.out.print("Invalid option. Enter 'M', 'U', or 'S': ");
             scanner.next();
         }
         return scanner.next().toUpperCase();
     }
-    
-    public Agent getCurrentAgent() {
-        if (board.getTurn() == Piece.Type.MUSKETEER) {
-        	this.player = musketeerAgent;
-            return musketeerAgent;
-        }
-        this.player = guardAgent;
-        return guardAgent;
-    }
-    public String getAgentName(Type type) {
-        if (type == Piece.Type.MUSKETEER) {
-            return musketeerAgent.getName();
-        }
-  
-        return guardAgent.getName();
-    }
-
 
     /**
      * Returns whether both sides are human players
@@ -242,7 +189,7 @@ public class ThreeMusketeers {
         }
         return scanner.next().toUpperCase();
     }
- 
+
     /**
      * Get human input for selecting the game mode
      * @return the chosen GameMode
@@ -262,6 +209,7 @@ public class ThreeMusketeers {
             System.out.println("Invalid option.");
             return getModeInput();
         }
+        stopwatch.start();
         return GameMode.values()[mode];
     }
 
