@@ -71,3 +71,4 @@ great way to implement the observer design pattern. The worst experience
 was how there is a lot to get done in a short amount of time so we are
 forced to work diligently throughout the week in order to complete the
 sprint to our best ability (Zoubair)
+

@@ -5,7 +5,7 @@ import java.util.List;
 public class GreedyAgent extends Agent {
     Board boardCopy;
     BoardEvaluatorImpl boardEvaluator;
-    int depth = 10;
+    int depth = 10; 
 
     public GreedyAgent(Board board) {
         super(board);
@@ -16,6 +16,7 @@ public class GreedyAgent extends Agent {
         super(board);
         this.boardEvaluator = boardEvaluator;
         this.depth = depth;
+        this.name = this.setName();
     }
 
     /**
@@ -101,4 +102,15 @@ public class GreedyAgent extends Agent {
 
         return boardEvaluator.evaluateBoard(boardCopy);
     }
+
+	@Override
+	public String getName() {
+		return this.name;
+	}
+
+	@Override
+	public String setName() {
+		
+		return this.name = "greedy";
+	}
 }

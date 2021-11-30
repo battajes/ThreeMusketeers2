@@ -1,2 +1,5 @@
-Date, Sprint #, Standup #, Name, What did you work on since the last standup?, What do you commit to next?, When do you think you'll be done?, Do you have any blockers?
+Date,Sprint #,Standup #,Name,What did you work on since the last standup?,What do you commit to next?,When do you think you'll be done?,Do you have any blockers?
 Nov 23rd,1,1,Ahmad,Fixed isGameOver bug,I will work on asking for name to store for high scores,In two days,No blockers in the way for my work
+Nov 24th,1,1,Jessica,Changed the strategy attribute to player,I will work on asking for user input for player name,in two days,no blockers
+Nov 23rd,1,1,Sakshi,started by changing the momento from a list of moves to a new arraylist,add get size in momento class,In two days,no blockers
+Nov 23rd,1,1,Zoubair,"Completed Observer and Observable classes, as well as the StopWatch class",The Timer class,Two days,There are no blockers
