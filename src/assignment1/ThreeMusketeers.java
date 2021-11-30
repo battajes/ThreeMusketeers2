@@ -15,9 +15,11 @@ public class ThreeMusketeers {
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
 
+
     private final Memento menento;
 
     private Agent player;
+
 
     // All possible game modes
     public enum GameMode {
