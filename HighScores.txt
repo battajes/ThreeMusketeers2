@@ -1,0 +1,4 @@
+
+Random: 0.24 - Random
+Greedy: 1.37 - Greedy
+Ur: 2.14 - Random
