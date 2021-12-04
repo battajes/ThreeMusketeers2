@@ -171,20 +171,6 @@ public class ThreeMusketeers {
         }
         System.out.printf("\n%s won!%n", this.getAgentName(this.board.getWinner()));
 
-        if (!isHumansPlaying()) {
-        	final Agent currentAgent;
-        	if (board.getTurn() == Piece.Type.MUSKETEER)
-                currentAgent = musketeerAgent;
-            else
-                currentAgent = guardAgent;
-        	if (currentAgent instanceof HumanAgent) {
-	             System.out.println("Who was playing? ");
-	             String test = scanner.next();
-	             System.out.println("------");
-	             System.out.print(test);
-        	}
-        }
-
     }
 
     /**
@@ -309,7 +295,7 @@ public class ThreeMusketeers {
     }
 
     public static void main(String[] args) {
-        String boardFileName = "Boards/Starter.txt";
+        String boardFileName = "Boards/NearEnd.txt";
         ThreeMusketeers game = new ThreeMusketeers(boardFileName);
         game.play();
     }
