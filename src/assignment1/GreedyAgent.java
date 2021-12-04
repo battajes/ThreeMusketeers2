@@ -10,6 +10,7 @@ public class GreedyAgent extends Agent {
     public GreedyAgent(Board board) {
         super(board);
         this.boardEvaluator = new BoardEvaluatorImpl();
+        this.name = this.setName();
     }
 
     public GreedyAgent(Board board, BoardEvaluatorImpl boardEvaluator, int depth) {
@@ -111,6 +112,6 @@ public class GreedyAgent extends Agent {
 	@Override
 	public String setName() {
 		
-		return this.name = "greedy";
+		return this.name = "Greedy";
 	}
 }

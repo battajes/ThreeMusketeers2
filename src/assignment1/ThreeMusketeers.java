@@ -1,6 +1,14 @@
 
 package assignment1;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,6 +22,8 @@ public class ThreeMusketeers {
     private final StopWatch stopwatch = new StopWatch();
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
+    private final ArrayList<HighScore> highScores = new ArrayList<HighScore>();
+    private String enemy;
 
 
     private final Memento menento;
@@ -89,11 +99,13 @@ public class ThreeMusketeers {
                 musketeerAgent = side.equals("M") ? new HumanAgent(board, Piece.Type.MUSKETEER) : new RandomAgent(board);
                 
                 guardAgent = side.equals("G") ? new HumanAgent(board, Piece.Type.GUARD) : new RandomAgent(board);
+                this.enemy = "Random";
             }
             case HumanGreedy -> {
                 String side = getSideInput();
                 musketeerAgent = side.equals("M") ? new HumanAgent(board, Piece.Type.MUSKETEER) : new GreedyAgent(board);
                 guardAgent = side.equals("G") ? new HumanAgent(board, Piece.Type.GUARD) : new GreedyAgent(board);
+                this.enemy = "Greedy";
             }
         }
     } 
@@ -149,6 +161,14 @@ public class ThreeMusketeers {
         }
         stopwatch.stopTimer();
         System.out.println(board);
+        HighScore newHighScore = HighScoreFactory.makeHighScore(this.enemy, this.getAgentName(this.board.getWinner()), stopwatch.getTime(), this.enemy);
+        Path p = Paths.get("HighScores.txt");
+        String s = System.lineSeparator() + (newHighScore.getName() + ": " + String.format("%.2f", newHighScore.getTime()) + " - " + newHighScore.getType());
+        try {
+            Files.write(p, s.getBytes(), StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            System.err.println(e);
+        }
         System.out.printf("\n%s won!%n", this.getAgentName(this.board.getWinner()));
 
         if (!isHumansPlaying()) {
@@ -178,7 +198,7 @@ public class ThreeMusketeers {
     	this.menento.setState(move2);
     	//moves.add(move2);
     	board.move(move1);
-      stopwatch.notifyObserver();
+        stopwatch.notifyObserver();
     	stopwatch.time.getTime();
     }
 
@@ -257,13 +277,29 @@ public class ThreeMusketeers {
         System.out.println("""
                     0: Human vs Human
                     1: Human vs Computer (Random)
-                    2: Human vs Computer (Greedy)""");
+                    2: Human vs Computer (Greedy)
+                    3: High Scores""");
         System.out.print("Choose a game mode to play i.e. enter a number: ");
         while (!scanner.hasNextInt()) {
             System.out.print("Invalid option. Enter 0, 1, or 2: ");
             scanner.next();
         }
         final int mode = scanner.nextInt();
+        if (mode == 3) { 
+        	System.out.println("High Scores:");
+    		try (BufferedReader br = new BufferedReader(new FileReader("HighScores.txt"))) {
+    		    String line;
+    		    while ((line = br.readLine()) != null) {
+    		       System.out.println(line);
+    		    }
+    		} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	return getModeInput();
+        }
         if (mode < 0 || mode > 2) {
             System.out.println("Invalid option.");
             return getModeInput();

@@ -4,10 +4,12 @@ public class HighScore {
 	
 	private String name;
 	private double time;
+	private String type;
 	
-	public HighScore(String n, double t) {
-		this.name = n;
-		this.time = t;
+	public HighScore(String name, double time, String type) {
+		this.name = name;
+		this.time = time;
+		this.type = type;
 	}
 	
 	public String getName() { 
@@ -16,5 +18,9 @@ public class HighScore {
 	
 	public double getTime() { 
 		return this.time;
+	}
+	
+	public String getType() {
+		return this.type;
 	}
 }

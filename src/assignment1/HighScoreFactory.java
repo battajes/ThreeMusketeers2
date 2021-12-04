@@ -2,16 +2,18 @@ package assignment1;
 
 public class HighScoreFactory {
 	
-	public HighScore makeHighScore(String highScoreType, String name, double time) {
+	public static HighScore makeHighScore(String highScoreType, String name, double time, String type) {
 		if (highScoreType == "Random"){
-				RandomHighScore random = new RandomHighScore(name, time);
+				RandomHighScore random = new RandomHighScore(name, time, type);
 				return random;
 		}
 		
-		else {
-			GreedyHighScore greedy = new GreedyHighScore(name, time);
+		if (highScoreType == "Greedy") {
+			GreedyHighScore greedy = new GreedyHighScore(name, time, type);
 			return greedy;
 		}
+		
+		return null;
 		
 	}
 
