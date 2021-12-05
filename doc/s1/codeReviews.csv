@@ -1,5 +1,5 @@
 Story Reviewed, Name, Reviewer, Pull Request Link, Brief Summary of Comments
-,,,,
-,,,,
-,,,,
-,,,,
+1.2,Timer,Ahmad,https://github.com/UTMCSC207/assignment3-javaholics/pull/11,"No noticeable error in the code. Runs as intended and planned to, and is very organized and easy to follow. Excellent use and implementation of the observer design pattern."
+1.4,Detailed Scores,Zoubair,https://github.com/UTMCSC207/assignment3-javaholics/pull/9,"No errors were found, code was very organized, and runs as intended to  "
+1.5,Undo Move,Jessica,https://github.com/UTMCSC207/assignment3-javaholics/pull/7#issue-1066518951,undos moves would recommand allowing players to only undo their moves
+1.7,Player Name Selector,Sakshi,https://github.com/UTMCSC207/assignment3-javaholics/pull/14#issue-1066696877,works perflectly player name can be changed for each mode

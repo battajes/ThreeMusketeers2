@@ -1,3 +1,4 @@
+
 package assignment1;
 
 import java.util.ArrayList;
@@ -10,12 +11,15 @@ import assignment1.Piece.Type;
 public class ThreeMusketeers {
 
     private final Board board;
+    private final StopWatch stopwatch = new StopWatch();
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
+
 
     private final Memento menento;
 
     private Agent player;
+
 
     // All possible game modes
     public enum GameMode {
@@ -92,7 +96,7 @@ public class ThreeMusketeers {
                 guardAgent = side.equals("G") ? new HumanAgent(board, Piece.Type.GUARD) : new GreedyAgent(board);
             }
         }
-    }
+    } 
 
     /**
      * Runs the game, handling human input for move actions
@@ -100,7 +104,8 @@ public class ThreeMusketeers {
      */
     private void runGame() {
         while(!board.isGameOver()) {
-        	
+        	System.out.println("It is Player "+ this.getCurrentAgent().getName() + "'s turn");
+        	System.out.println(this.getCurrentAgent().icon());
             System.out.println("\n" + board);
             
             final Agent currentAgent;
@@ -143,9 +148,11 @@ public class ThreeMusketeers {
                 move(currentAgent);
             }
         }
-
+        stopwatch.stopTimer();
         System.out.println(board);
         System.out.printf("\n%s won!%n", this.getAgentName(this.board.getWinner()));
+        System.out.println(this.getWinningAgent().icon());
+        
 
         if (!isHumansPlaying()) {
         	final Agent currentAgent;
@@ -174,6 +181,8 @@ public class ThreeMusketeers {
     	this.menento.setState(move2);
     	//moves.add(move2);
     	board.move(move1);
+      stopwatch.notifyObserver();
+    	stopwatch.time.getTime();
     }
 
     /**
@@ -220,6 +229,14 @@ public class ThreeMusketeers {
   
         return guardAgent.getName();
     }
+    public Agent getWinningAgent() {
+        if (board.getWinner() == Piece.Type.MUSKETEER) {
+        	
+            return musketeerAgent;
+        }
+        
+        return guardAgent;
+    }
 
 
     /**
@@ -262,6 +279,7 @@ public class ThreeMusketeers {
             System.out.println("Invalid option.");
             return getModeInput();
         }
+        stopwatch.start();
         return GameMode.values()[mode];
     }
 
