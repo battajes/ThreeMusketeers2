@@ -1,20 +1,27 @@
 package assignment1;
-import java.lang.Object;
 
-public class Node extends java.lang.Object{
-	Object curr;
+
+public class Node{
+	String item;
 	Node next;
 
-	public Node() {
+	public Node(String s) {
 		// TODO Auto-generated constructor stub
+		this.item = s;
+		this.next = null;
 		
 	}
-	public Object curr() {
-		return this.curr;
+	
+	public String getCurr() {
+		return this.item;
 		
 	}
 	public Node next() {
 		return this.next;
+	}
+	
+	public String toString() {
+		return (this.item);
 	}
 
 }

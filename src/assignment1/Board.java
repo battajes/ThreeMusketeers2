@@ -21,6 +21,7 @@ public class Board {
 
     private Piece.Type turn;
     private Piece.Type winner;
+    private IconSelector icons = new IconSelector();
 
     /**
      * Create a Board with the current player turn set.
@@ -93,6 +94,9 @@ public class Board {
             }
     	}
         return b;
+    }
+    public IconSelector getIcon() {
+    	return this.icons;
     }
 
     /**

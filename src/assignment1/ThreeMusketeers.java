@@ -102,7 +102,8 @@ public class ThreeMusketeers {
      */
     private void runGame() {
         while(!board.isGameOver()) {
-        	
+        	System.out.println("It is Player "+ this.getCurrentAgent().getName() + "'s turn");
+        	System.out.println(this.getCurrentAgent().icon());
             System.out.println("\n" + board);
             
             final Agent currentAgent;
@@ -148,6 +149,8 @@ public class ThreeMusketeers {
         stopwatch.stopTimer();
         System.out.println(board);
         System.out.printf("\n%s won!%n", this.getAgentName(this.board.getWinner()));
+        System.out.println(this.getWinningAgent().icon());
+        
 
         if (!isHumansPlaying()) {
         	final Agent currentAgent;
@@ -223,6 +226,14 @@ public class ThreeMusketeers {
         }
   
         return guardAgent.getName();
+    }
+    public Agent getWinningAgent() {
+        if (board.getWinner() == Piece.Type.MUSKETEER) {
+        	
+            return musketeerAgent;
+        }
+        
+        return guardAgent;
     }
 
 
