@@ -1,7 +1,18 @@
 
 package assignment1;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,6 +25,8 @@ public class ThreeMusketeers {
     private final StopWatch stopwatch = new StopWatch();
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
+    private final ArrayList<HighScore> highScores = new ArrayList<HighScore>();
+    private String enemy;
 
 
     private final Memento menento;
@@ -89,11 +102,13 @@ public class ThreeMusketeers {
                 musketeerAgent = side.equals("M") ? new HumanAgent(board, Piece.Type.MUSKETEER) : new RandomAgent(board);
                 
                 guardAgent = side.equals("G") ? new HumanAgent(board, Piece.Type.GUARD) : new RandomAgent(board);
+                this.enemy = "Random";
             }
             case HumanGreedy -> {
                 String side = getSideInput();
                 musketeerAgent = side.equals("M") ? new HumanAgent(board, Piece.Type.MUSKETEER) : new GreedyAgent(board);
                 guardAgent = side.equals("G") ? new HumanAgent(board, Piece.Type.GUARD) : new GreedyAgent(board);
+                this.enemy = "Greedy";
             }
         }
     } 
@@ -104,8 +119,7 @@ public class ThreeMusketeers {
      */
     private void runGame() {
         while(!board.isGameOver()) {
-        	System.out.println("It is Player "+ this.getCurrentAgent().getName() + "'s turn");
-        	System.out.println(this.getCurrentAgent().icon());
+        	
             System.out.println("\n" + board);
             
             final Agent currentAgent;
@@ -118,7 +132,7 @@ public class ThreeMusketeers {
             else {
                 currentAgent = guardAgent;
 
-            } 
+            }
 
             if (currentAgent instanceof HumanAgent) // Human move
             	
@@ -150,23 +164,25 @@ public class ThreeMusketeers {
         }
         stopwatch.stopTimer();
         System.out.println(board);
-        System.out.printf("\n%s won!%n", this.getAgentName(this.board.getWinner()));
-        System.out.println(this.getWinningAgent().icon());
-        
-
-        if (!isHumansPlaying()) {
-        	final Agent currentAgent;
-        	if (board.getTurn() == Piece.Type.MUSKETEER)
-                currentAgent = musketeerAgent;
-            else
-                currentAgent = guardAgent;
-        	if (currentAgent instanceof HumanAgent) {
-	             System.out.println("Who was playing? ");
-	             String test = scanner.next();
-	             System.out.println("------");
-	             System.out.print(test);
-        	}
+        HighScore newHighScore = HighScoreFactory.makeHighScore(this.enemy, this.getAgentName(this.board.getWinner()), stopwatch.getTime(), this.enemy);
+        Path p = Paths.get("HighScores.txt");
+        Agent curagent;
+        if (this.board.getWinner() == Piece.Type.MUSKETEER) {
+            curagent = musketeerAgent;
         }
+  
+        else {
+        	curagent = guardAgent;
+        }
+        if (!isHumansPlaying() && curagent instanceof HumanAgent) {
+	        String s = (String.format("%.2f", newHighScore.getTime()) + ": " + newHighScore.getName() + " vs " + newHighScore.getType());
+	        try {
+	            Files.write(p, s.getBytes(), StandardOpenOption.APPEND);
+	        } catch (IOException e) {
+	            System.err.println(e);
+	        }
+        }
+        System.out.printf("\n%s won!%n", this.getAgentName(this.board.getWinner()));
 
     }
 
@@ -181,7 +197,7 @@ public class ThreeMusketeers {
     	this.menento.setState(move2);
     	//moves.add(move2);
     	board.move(move1);
-      stopwatch.notifyObserver();
+        stopwatch.notifyObserver();
     	stopwatch.time.getTime();
     }
 
@@ -229,14 +245,6 @@ public class ThreeMusketeers {
   
         return guardAgent.getName();
     }
-    public Agent getWinningAgent() {
-        if (board.getWinner() == Piece.Type.MUSKETEER) {
-        	
-            return musketeerAgent;
-        }
-        
-        return guardAgent;
-    }
 
 
     /**
@@ -268,13 +276,72 @@ public class ThreeMusketeers {
         System.out.println("""
                     0: Human vs Human
                     1: Human vs Computer (Random)
-                    2: Human vs Computer (Greedy)""");
+                    2: Human vs Computer (Greedy)
+                    3: High Scores""");
         System.out.print("Choose a game mode to play i.e. enter a number: ");
         while (!scanner.hasNextInt()) {
             System.out.print("Invalid option. Enter 0, 1, or 2: ");
             scanner.next();
         }
         final int mode = scanner.nextInt();
+        if (mode == 3) { 
+        	BufferedReader toRead = null;
+        	BufferedWriter toWrite = null;
+            ArrayList<String> allLines = new ArrayList<String>();
+            try
+            {
+            	toRead = new BufferedReader(new FileReader("HighScores.txt"));
+                String line = toRead.readLine();
+                while (line != null)
+                {
+                	allLines.add(line);
+                    line = toRead.readLine();
+                }
+                Collections.sort(allLines);
+                toWrite = new BufferedWriter(new FileWriter("HighScores.txt"));
+                for (String check : allLines)
+                {
+                	toWrite.write(check);
+                	toWrite.newLine();
+                }
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                try
+                {
+                    if (toRead != null)
+                    {
+                    	toRead.close();
+                    }
+                    if(toWrite != null)
+                    {
+                    	toWrite.close();   
+                    }
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        	System.out.println("-------------------------------------");
+        	System.out.println("High Scores:");
+    		try (BufferedReader br = new BufferedReader(new FileReader("HighScores.txt"))) {
+    		    Path p = Paths.get("HighScores.txt");
+    		    String actual = Files.readString(p);
+    		    System.out.println(actual);
+    		} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		System.out.println("-------------------------------------");
+        	return getModeInput();
+        }
         if (mode < 0 || mode > 2) {
             System.out.println("Invalid option.");
             return getModeInput();
@@ -284,7 +351,7 @@ public class ThreeMusketeers {
     }
 
     public static void main(String[] args) {
-        String boardFileName = "Boards/Starter.txt";
+        String boardFileName = "Boards/GameOver.txt";
         ThreeMusketeers game = new ThreeMusketeers(boardFileName);
         game.play();
     }
