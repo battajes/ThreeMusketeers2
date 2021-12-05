@@ -22,8 +22,6 @@ public abstract class Agent {
     public abstract String getName();
      
     public abstract String setName();
+    public abstract Object getIcon();
+    public abstract Object icon();
 }
-
-
-
-

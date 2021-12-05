@@ -113,7 +113,7 @@ public class ThreeMusketeers {
             else {
                 currentAgent = guardAgent;
 
-            }
+            } 
 
             if (currentAgent instanceof HumanAgent) // Human move
             	

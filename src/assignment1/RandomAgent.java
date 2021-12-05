@@ -1,14 +1,21 @@
 package assignment1;
 
+
 import java.util.List;
 import java.util.Random;
 
 public class RandomAgent extends Agent {
 	
 
-    public RandomAgent(Board board) {
+    private String icon;
+
+
+	public RandomAgent(Board board) {
         super(board);
         this.name = this.setName();
+        this.icon = this.getIcon();
+       
+        
     }
 
     /**
@@ -30,5 +37,21 @@ public class RandomAgent extends Agent {
     public String setName() {
     	return this.name = "Random";
     }
+    
+	
+	public String getIcon () {
+		System.out.println("Printing the RandomAgent's icon");
+		 int r = (int) (Math.random()*5);
+	        String i = new String [] {"（˶′◡‵˶）","(⋟﹏⋞)","❀◕ ‿ ◕❀"}[r];
+	       this.icon = i;
+	       return i;
+	}
+		
+	
+	public Object icon () {
+		
+		return this.icon;
+	
+	}
     
 }

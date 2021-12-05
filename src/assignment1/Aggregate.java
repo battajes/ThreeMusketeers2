@@ -1,9 +1,10 @@
 package assignment1;
 
-public class Aggregate {
+public interface Aggregate {
 
-	public Aggregate() {
-		// TODO Auto-generated constructor stub
-	}
+
+	public LinkedList createLinkedList();
+		
+
 
 }

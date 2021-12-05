@@ -5,16 +5,20 @@ import java.util.Scanner;
 import assignment1.Piece.Type;
 import assignment1.Exceptions.InvalidMoveException;
 
-public class HumanAgent extends Agent {
+public class HumanAgent extends Agent  {
 	private final Scanner scanner = new Scanner(System.in);
 	private final Scanner s = new Scanner(System.in);
+	private final Scanner m = new Scanner(System.in);
 	private Type type;
+	private Object icon;
 	
 
     public HumanAgent(Board board, Type type) {
         super(board);
         this.type = type;
         this.name = this.setName();
+        this.icon = this.getIcon();
+        
     }
 
     /**
@@ -81,5 +85,47 @@ public class HumanAgent extends Agent {
 	public String setName() {
 		System.out.print(this.type + ": Enter player name: " );
 		return s.next();
+	}
+	
+	public Object getIcon() {
+		IconSelector hi = this.board.getIcon();
+
+		System.out.println("For this game, each players get icons");
+		System.out.println(hi.getNext());
+		System.out.println("Showing icon, press\n"+ "N: to see the next icon for selection,\n"
+				+ "S: to select the icon, and\n"
+				+ "A: to add your own icon for " + this.type); 
+		
+		while (true) {	
+		
+		String h = m.next();
+
+		if (h.equals("N")) {
+			System.out.println(hi.getNext());
+			System.out.println("Showing icon, press\n"+ "N: to see the next icon for selection,\n"
+					+ "S: to select the icon, and\n"
+					+ "A: to add your own icon "); 
+		}
+		else if (h.equals("S")) {
+			
+			Object hqw = hi.x.currItem();
+			hi.selected();
+			
+			return hqw;
+			
+		}
+		else if (h.equals("A")) {
+			System.out.println("Please enter your own icon: ");
+			return m.next();
+		}
+		else {
+			System.out.println("Please enter a valid input");
+		}
+	}
+	}
+	public Object icon () {
+		
+		return this.icon;
+	
 	}
 }
