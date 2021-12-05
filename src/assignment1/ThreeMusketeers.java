@@ -163,11 +163,21 @@ public class ThreeMusketeers {
         System.out.println(board);
         HighScore newHighScore = HighScoreFactory.makeHighScore(this.enemy, this.getAgentName(this.board.getWinner()), stopwatch.getTime(), this.enemy);
         Path p = Paths.get("HighScores.txt");
-        String s = System.lineSeparator() + (newHighScore.getName() + ": " + String.format("%.2f", newHighScore.getTime()) + " - " + newHighScore.getType());
-        try {
-            Files.write(p, s.getBytes(), StandardOpenOption.APPEND);
-        } catch (IOException e) {
-            System.err.println(e);
+        Agent curagent;
+        if (this.board.getWinner() == Piece.Type.MUSKETEER) {
+            curagent = musketeerAgent;
+        }
+  
+        else {
+        	curagent = guardAgent;
+        }
+        if (!isHumansPlaying() && curagent instanceof HumanAgent) {
+	        String s = System.lineSeparator() + (newHighScore.getName() + ": " + String.format("%.2f", newHighScore.getTime()) + " - " + newHighScore.getType());
+	        try {
+	            Files.write(p, s.getBytes(), StandardOpenOption.APPEND);
+	        } catch (IOException e) {
+	            System.err.println(e);
+	        }
         }
         System.out.printf("\n%s won!%n", this.getAgentName(this.board.getWinner()));
 
@@ -272,7 +282,7 @@ public class ThreeMusketeers {
         }
         final int mode = scanner.nextInt();
         if (mode == 3) { 
-        	System.out.println("High Scores:");
+        	System.out.println("-------------------------------------");
     		try (BufferedReader br = new BufferedReader(new FileReader("HighScores.txt"))) {
     		    String line;
     		    while ((line = br.readLine()) != null) {
@@ -284,6 +294,7 @@ public class ThreeMusketeers {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+    		System.out.println("-------------------------------------");
         	return getModeInput();
         }
         if (mode < 0 || mode > 2) {
@@ -295,7 +306,7 @@ public class ThreeMusketeers {
     }
 
     public static void main(String[] args) {
-        String boardFileName = "Boards/NearEnd.txt";
+        String boardFileName = "Boards/GameOver.txt";
         ThreeMusketeers game = new ThreeMusketeers(boardFileName);
         game.play();
     }
