@@ -3,3 +3,4 @@ Nov 24th,1,2,Ahmad,I implented asking for names to store for a detailed high sco
 Nov 25th,1,2,Jessica,decided to create a currentAgent method and a scanner object to ask for input,Ask the user for input,2 days,couldn't get the name to change as the imputed string by user
 Nov 25th,1,2,Sakshi,figuring out how to add all the moves made previously and display them,for the move to be undone when selected,2 days,had errors finding done moves my random agent.
 Nov 24th,1,2,Zoubair,Completed Timer class,I commit to implementing the new classes and observer pattern into the three musketeers and making the timer work in game ,3 days,No blockers
+

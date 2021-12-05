@@ -1,4 +1,3 @@
-
 Notetaker: Sakshi Jagtap
 
 The participants in the meeting: \* Sakshi Jagtap \* Jessica Batta \*
