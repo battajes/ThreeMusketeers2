@@ -1,4 +1,5 @@
 Date, Sprint #, Standup #, Name, What did you work on since the last standup?, What do you commit to next?, When do you think you'll be done?, Do you have any blockers?
+Dec 3rd,2,2,Ahmad,I have refined DEV-13 as intended to allow for the implementation of DEV-14,I commit to finishing the implementation of DEV-14,3 days,No blockers
 Dec 2,2,2,Jessica,choose random icons and implemented it in the rangomagent class, set a fixed icon for greedy agent and fix bugs, 1 day, not really just bugs
 Dec 3,2,2,Sakshi, test code and fixed bugs, test out edge cases, 1 day, bugs
 ,,,,,,,
