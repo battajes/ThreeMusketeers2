@@ -25,7 +25,3 @@ public abstract class Agent {
     public abstract Object getIcon();
     public abstract Object icon();
 }
-
-
-
-
