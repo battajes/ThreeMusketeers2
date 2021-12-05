@@ -1,2 +1,7 @@
 Date, Sprint #, Standup #, Name, What did you work on since the last standup?, What do you commit to next?, When do you think you'll be done?, Do you have any blockers?
 Dec 1st,2,1,Ahmad ,I began implementing detailed scores by looking over the implementation of DEV-13,I commit to adding necessary changes to DEV-13 to be able to refine it so DEV-14 can be implemented,2 days,No blockers
+Nov 30,2,1,Jessica,Selected all the icons needed for the selection of human agent added them to LinkedList, choose random icons for Random Agent,2 days, Nodes were not deleted once one human agent selected an icon since two players cannot choose the same icon.
+Nov 30,2,1,Sakshi,Fixed errors in the undo method and helped make icons in the iconSelector,test code and our project,3 days, fixing deleted nodes.
+,,,,,,,
+,,,,,,,
+
