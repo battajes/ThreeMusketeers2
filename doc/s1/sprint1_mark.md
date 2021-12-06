@@ -49,7 +49,7 @@
   - 1 mark  = part of the stories not started
   - 0 marks = no stories started
   
-  Your Mark: 1
+  Your Mark: 2
 
 - Do the pull request on GitHub match the stories/tasks listed in the sprint backlog? (max 2 marks)
   
@@ -57,7 +57,7 @@
   - 1 mark  = two or more stories/tasks are missing
   - 0 marks = no stories/tasks or stories/tasks do not match at all
   
-  Your Mark: 1
+  Your Mark: 2
 
 - Is the pull request done by the person to whom the task has been assigned to?  (max 2 marks)
   
@@ -76,7 +76,7 @@
   - 1 mark  = pull request for 4 or more tasks not made from own separate branch
   - 0 marks = pull request for the majority of tasks not made from own separate branch
   
-  Your Mark: 0
+  Your Mark: 3
 
 - Is the git commit message clear? (max 2 marks)
   
@@ -103,7 +103,7 @@
   
   Your Mark: 2
 
-Featurework Total Mark: 6 / 18
+Featurework Total Mark: 11 / 18
 
 ---
 
@@ -118,7 +118,7 @@ Featurework Total Mark: 6 / 18
 
 - Mark Breakdown: [x = Percentage of story points completed * 12]
   
-  Your Mark: 6 / 12
+  Your Mark: 8 / 12
 
 ---
 
@@ -166,7 +166,7 @@ Featurework Total Mark: 6 / 18
 
 ## Total Mark
 
-37 / 55
+44 / 55
 
 ---
 
