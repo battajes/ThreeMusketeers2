@@ -1,3 +1,4 @@
+
 package assignment1;
 
 import java.util.List;
@@ -6,11 +7,11 @@ public class GreedyAgent extends Agent {
     Board boardCopy;
     BoardEvaluatorImpl boardEvaluator;
     int depth = 10; 
+   private String icon;
 
     public GreedyAgent(Board board) {
         super(board);
         this.boardEvaluator = new BoardEvaluatorImpl();
-        this.name = this.setName();
     }
 
     public GreedyAgent(Board board, BoardEvaluatorImpl boardEvaluator, int depth) {
@@ -18,6 +19,7 @@ public class GreedyAgent extends Agent {
         this.boardEvaluator = boardEvaluator;
         this.depth = depth;
         this.name = this.setName();
+        this.icon = this.getIcon();
     }
 
     /**
@@ -112,6 +114,20 @@ public class GreedyAgent extends Agent {
 	@Override
 	public String setName() {
 		
-		return this.name = "Greedy";
+		return this.name = "greedy";
 	}
+	
+	public String getIcon () {
+		
+		System.out.println("Printing the greedyAgent icon");
+		return "(ง'̀-'́)ง";
+	
+	}
+	public String icon () {
+		
+		return this.icon;
+	
+	}
+	
+
 }

@@ -1,3 +1,4 @@
+
 package assignment1;
 
 import java.util.ArrayList;
@@ -38,26 +39,34 @@ public class Memento {
 			this.changeState();
 			moveNum = moveNum + 1;
 		}
+		
 		System.out.println("Please enter the number of the move you want to undo; ");
-		while (!scanner.hasNextInt() ) {
+		scanner.hasNextInt();
+		while (true ) {
+			if (!scanner.hasNextInt()) {
             System.out.print("Invalid option. Please enter a number: ");
             scanner.next();
-        }
+			}
+        
 		while (scanner.hasNextInt()) {
 			int hi = scanner.nextInt();
+
 			if (hi <= this.getSize()) {
 				while (remove != hi) {
 					board.undoMove(moves.remove(remove-1));
 					remove -= 1;
 				}
 				return moves.remove(hi-1);
+				
 			}
 			else {
 				System.out.println("Please enter a valid move");
+				
 			}
+		}
 		
 		}
-		return moves.get(0);	
+		
 	}
 	
 
@@ -81,10 +90,5 @@ public class Memento {
 			this.state = Piece.Type.GUARD;
 		}
 	}
-
-
-
-
-	
 
 }

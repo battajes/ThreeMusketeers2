@@ -1,3 +1,4 @@
+
 package assignment1;
 
 import java.io.BufferedWriter;
@@ -21,12 +22,13 @@ public class Board {
 
     private Piece.Type turn;
     private Piece.Type winner;
+    private IconSelector icons = new IconSelector();
 
     /**
      * Create a Board with the current player turn set.
      */
     public Board() {
-        this.loadBoard("Boards/NearEnd.txt");
+        this.loadBoard("Boards/Starter.txt");
     }
 
     /**
@@ -93,6 +95,9 @@ public class Board {
             }
     	}
         return b;
+    }
+    public IconSelector getIcon() {
+    	return this.icons;
     }
 
     /**
@@ -435,3 +440,4 @@ public class Board {
         System.out.printf("Loaded board from %s.\n", filePath);
     }
 }
+
