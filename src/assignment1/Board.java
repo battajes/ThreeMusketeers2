@@ -1,3 +1,4 @@
+
 package assignment1;
 
 import java.io.BufferedWriter;
@@ -439,3 +440,4 @@ public class Board {
         System.out.printf("Loaded board from %s.\n", filePath);
     }
 }
+

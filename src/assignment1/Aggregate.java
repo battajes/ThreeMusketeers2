@@ -1,3 +1,4 @@
+
 package assignment1;
 
 public interface Aggregate {
@@ -6,3 +7,4 @@ public interface Aggregate {
 
 
 }
+

@@ -1,3 +1,4 @@
+
 package assignment1;
 
  abstract interface LinkedList{
@@ -18,3 +19,4 @@ package assignment1;
 
 	
 }
+

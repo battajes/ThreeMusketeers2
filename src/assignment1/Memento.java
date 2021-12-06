@@ -1,3 +1,4 @@
+
 package assignment1;
 
 import java.util.ArrayList;
@@ -89,10 +90,5 @@ public class Memento {
 			this.state = Piece.Type.GUARD;
 		}
 	}
-
-
-
-
-	
 
 }
